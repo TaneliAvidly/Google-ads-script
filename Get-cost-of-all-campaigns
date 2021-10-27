@@ -1,0 +1,29 @@
+function main() {
+  
+  var totalCost = 0;
+  var shoppingTotalCost = 0;
+  
+  var retval = [];
+  var shoppingCampaignIterator = AdsApp.shoppingCampaigns().get();
+  while (shoppingCampaignIterator.hasNext()) {
+    var shoppingCampaign = shoppingCampaignIterator.next();
+    var shoppingStats = shoppingCampaign.getStatsFor('LAST_7_DAYS');
+    // Cost
+    var shoppingCampaignCost = shoppingStats.getCost();
+    shoppingTotalCost += shoppingCampaignCost;
+  }
+  
+  var campaignIterator = AdsApp.campaigns().get();
+  while (campaignIterator.hasNext()) {
+    var campaign = campaignIterator.next();
+    var stats = campaign.getStatsFor('LAST_7_DAYS');
+    // Cost
+    var campaignCost = stats.getCost();
+    totalCost += campaignCost;
+  }
+  
+  var campaignCost = totalCost;
+  var campaignCost = shoppingTotalCost;
+  Logger.log("Kulutus: " + (totalCost + shoppingTotalCost).toFixed(2));
+  
+}
