@@ -3,7 +3,6 @@ function main() {
   var totalCost = 0;
   var shoppingTotalCost = 0;
   
-  var retval = [];
   var shoppingCampaignIterator = AdsApp.shoppingCampaigns().get();
   while (shoppingCampaignIterator.hasNext()) {
     var shoppingCampaign = shoppingCampaignIterator.next();
@@ -25,4 +24,5 @@ function main() {
   var campaignCost = totalCost;
   var campaignCost = shoppingTotalCost;
   Logger.log("Kulutus: " + (totalCost + shoppingTotalCost).toFixed(2));
+  
 }
