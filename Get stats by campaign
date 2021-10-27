@@ -1,0 +1,9 @@
+function main() {
+  var campaignIterator = AdsApp.campaigns().withCondition('Status = ENABLED').get();
+  while (campaignIterator.hasNext()) {
+    var campaign = campaignIterator.next();
+    var stats = campaign.getStatsFor('LAST_7_DAYS');
+    Logger.log(campaign.getName() + ', ' + stats.getClicks() + 'clicks, ' +
+        stats.getImpressions() + ' impressions');
+  }
+}
