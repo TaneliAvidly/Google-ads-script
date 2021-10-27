@@ -25,5 +25,4 @@ function main() {
   var campaignCost = totalCost;
   var campaignCost = shoppingTotalCost;
   Logger.log("Kulutus: " + (totalCost + shoppingTotalCost).toFixed(2));
-  
 }
