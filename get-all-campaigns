@@ -1,0 +1,27 @@
+function main() {
+
+  // Get campaigns
+  var campaignIterator = AdsApp.campaigns().withCondition('Status = ENABLED').get();
+  while (campaignIterator.hasNext()) {
+    var campaign = campaignIterator.next();
+    Logger.log(campaign.getName());
+  }
+  
+  // Get shopping campaigns
+  var retval = [];
+  var shoppingCampaignIterator = AdsApp.shoppingCampaigns().withCondition('Status = ENABLED').get();
+  while (shoppingCampaignIterator.hasNext()) {
+    var shoppingCampaign = shoppingCampaignIterator.next();
+
+    // Optional: Comment out if you don't need to print details.
+    Logger.log('Campaign Name: %s', shoppingCampaign.getName());
+    retval.push(campaign);
+  }
+  
+  // Amount of regular campaigns
+  var regularCampaigns = campaignIterator.totalNumEntities();
+  var shoppingCampaigns = shoppingCampaignIterator.totalNumEntities();
+  Logger.log('Total campaigns found : ' +
+      (regularCampaigns + shoppingCampaigns));
+  return retval;
+}
