@@ -1,0 +1,58 @@
+// This script doesn't work on the new Google Scripts BETA!
+
+// Set campaign names
+var campaign_1 = "FI | DSA | 2021";
+var campaign_2 = "FI | Products";
+
+function main() {
+  
+  // Get spreadsheet
+  const url = 'https://docs.google.com/spreadsheets/d/1RZ1F2W7D6jvdIQPovt3gFQN4lc-sZoPQAB1SDrB2lII/edit#gid=0'
+  const sheet = SpreadsheetApp.openByUrl(url)
+  const queries = sheet.getSheetByName('queries')
+  queries.getRange("A:B").clearContent()
+
+  // Choose what should be written to the sheet
+  const campaign_1_terms = [['Hakutermit: ' + campaign_1]];
+  const campaign_2_terms = [['Hakutermit: ' + campaign_2]];
+  
+  // Campaign1 search terms
+  const report1 = AdsApp.report(
+    " SELECT CampaignName, Query " +
+    " FROM SEARCH_QUERY_PERFORMANCE_REPORT " +
+    " WHERE CampaignName CONTAINS_IGNORE_CASE '" + campaign_1 + "' " +
+    " DURING LAST_30_DAYS ");
+  const rows1 = report1.rows();
+  
+  while (rows1.hasNext()) {
+    var row1 = rows1.next();
+    campaign_1_terms.push([
+      // row['CampaignName'],
+      row1['Query']
+  ])};
+  
+  queries.getRange(1,1,campaign_1_terms.length,
+  campaign_1_terms[0].length).setValues(campaign_1_terms);
+  
+  // Campaign2 search terms
+  const report2 = AdsApp.report(
+    " SELECT CampaignName, Query " +
+    " FROM SEARCH_QUERY_PERFORMANCE_REPORT " +
+    " WHERE CampaignName CONTAINS_IGNORE_CASE '" + campaign_2 + "' " +
+    " DURING LAST_30_DAYS ");
+  const rows2 = report2.rows();
+  
+  while (rows2.hasNext()) {
+    var row2 = rows2.next();
+    campaign_2_terms.push([
+      // row['CampaignName'],
+      row2['Query']
+  ])};
+  
+  queries.getRange(1,2,campaign_2_terms.length,
+  campaign_2_terms[0].length).setValues(campaign_2_terms);
+}
+
+
+
+
