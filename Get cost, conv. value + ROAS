@@ -3,7 +3,7 @@ function main() {
   var report = AdsApp.report(
     "SELECT Cost, AllConversionValue " +
     "FROM ACCOUNT_PERFORMANCE_REPORT " +
-    "DURING LAST_7_DAYS");
+    "DURING LAST_30_DAYS");
 
   var rows = report.rows();
   while (rows.hasNext()) {
@@ -12,9 +12,8 @@ function main() {
     var revenue = row["AllConversionValue"];
    
     // Cost and revenue are returned as text. Convert to numbers and then calculate ROAS
-    // ROAS is not coming right :(
-    var parseCost = parseInt(cost, 10);
-    var parseRevenue = parseInt(revenue, 10);
+    var parseCost = parseInt(cost.replace(/,/g, ''), 10);
+    var parseRevenue = parseInt(revenue.replace(/,/g, ''), 10);
     var roas = ((parseRevenue/parseCost) * 100).toFixed(2) + " %";
   }
   
