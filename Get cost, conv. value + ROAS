@@ -1,0 +1,20 @@
+function main() {
+  
+  // Campaign1 search terms
+  var report = AdsApp.report(
+    "SELECT Cost, AllConversionValue " +
+    "FROM ACCOUNT_PERFORMANCE_REPORT " +
+    "DURING LAST_7_DAYS");
+
+  var rows = report.rows();
+  while (rows.hasNext()) {
+    var row = rows.next();
+    var cost = row["Cost"];
+    var revenue = row["AllConversionValue"];
+  }
+  
+  var roas = ((revenue/cost) * 100).toFixed(2) + " %";
+  
+  Logger.log("Cost: " + cost + " Revenue: " + revenue + " ROAS: " + roas);
+  
+}
