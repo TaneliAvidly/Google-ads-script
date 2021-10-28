@@ -1,0 +1,23 @@
+function main() {
+
+  var report = AdsApp.report(
+    "SELECT Cost, Conversions, ConversionValue " +
+    "FROM ACCOUNT_PERFORMANCE_REPORT " +
+    "DURING LAST_30_DAYS");
+
+  var rows = report.rows();
+  while (rows.hasNext()) {
+    var row = rows.next();
+    var cost = row["Cost"];
+    var conversions = row["Conversions"];
+    var revenue = row["ConversionValue"];
+   
+    // Cost and revenue are returned as text. Convert to numbers and then calculate ROAS
+    var parseCost = parseInt(cost.replace(/,/g, ''), 10);
+    var parseRevenue = parseInt(revenue.replace(/,/g, ''), 10);
+    var roas = ((parseRevenue/parseCost) * 100).toFixed(2) + " %";
+  }
+  
+  Logger.log("Cost: " + cost + " Revenue: " + revenue + " All conversions: " + conversions + " ROAS: " + roas);
+  
+}
