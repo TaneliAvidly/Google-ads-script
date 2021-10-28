@@ -1,0 +1,27 @@
+// Set campaign names
+var campaign_1 = "FI | DSA | 2021";
+
+function main() {
+
+  var report = AdsApp.report(
+    "SELECT Cost, ConversionValue, Clicks " +
+    "FROM CAMPAIGN_PERFORMANCE_REPORT " +
+    "WHERE CampaignName CONTAINS_IGNORE_CASE '" + campaign_1 + "' " +
+    "DURING LAST_7_DAYS");
+
+  var rows = report.rows();
+  while (rows.hasNext()) {
+    var row = rows.next();
+    var cost = row["Cost"];
+    var clicks = row["Clicks"];
+    var revenue = row["ConversionValue"];
+   
+    // Cost and revenue are returned as text. Convert to numbers and then calculate ROAS
+    var parseCost = parseInt(cost.replace(/,/g, ''), 10);
+    var parseRevenue = parseInt(revenue.replace(/,/g, ''), 10);
+    var roas = ((parseRevenue/parseCost) * 100).toFixed(0) + " %";
+  }
+  
+  Logger.log("Cost: " + cost + " Revenue: " + revenue + " ROAS: " + roas + " Clicks: " + clicks);
+  
+}
