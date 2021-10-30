@@ -1,0 +1,51 @@
+var meter_1 = "Cost"; // Choose 1st meter
+var meter_2 = "Clicks"; // Choose 2nd meter
+var meter_3 = "ConversionValue"; // Choose 3rd meter
+
+function main() {
+  
+  // Last 14 days
+  
+  var last14days = AdsApp.report(
+    "SELECT Cost, ConversionValue, Clicks " +
+    "FROM ACCOUNT_PERFORMANCE_REPORT " +
+    "DURING LAST_14_DAYS");
+
+  var rows = last14days.rows();
+  while (rows.hasNext()) {
+    var row = rows.next();
+    var meter1 = row[meter_1];
+    var meter2 = row[meter_2];
+    var meter3 = row[meter_3];
+   
+    // Cost and revenue are returned as text. Convert to numbers and then calculate ROAS
+    var parseCost = parseInt(meter1.replace(/,/g, ''), 10);
+    var parseRevenue = parseInt(meter3.replace(/,/g, ''), 10);
+    var roas = ((parseRevenue/parseCost) * 100).toFixed(0) + " %";
+  }
+  
+  Logger.log("Last 14 days - Cost: " + meter1 + " Revenue: " + meter3 + " ROAS: " + roas + " Clicks: " + meter2);
+  
+  // Last 7 days
+  
+  var last7days = AdsApp.report(
+    "SELECT Cost, ConversionValue, Clicks " +
+    "FROM ACCOUNT_PERFORMANCE_REPORT " +
+    "DURING LAST_7_DAYS");
+
+  var rows = last7days.rows();
+  while (rows.hasNext()) {
+    var row = rows.next();
+    var meter1 = row[meter_1];
+    var meter2 = row[meter_2];
+    var meter3 = row[meter_3];
+   
+    // Cost and revenue are returned as text. Convert to numbers and then calculate ROAS
+    var parseCost = parseInt(meter1.replace(/,/g, ''), 10);
+    var parseRevenue = parseInt(meter3.replace(/,/g, ''), 10);
+    var roas = ((parseRevenue/parseCost) * 100).toFixed(0) + " %";
+  }
+  
+  Logger.log("Last 7 days - Cost: " + meter1 + " Revenue: " + meter3 + " ROAS: " + roas + " Clicks: " + meter2);
+  
+}
