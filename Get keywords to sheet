@@ -1,9 +1,9 @@
 function main() {
   
   // Get spreadsheet
-  var url = "https://docs.google.com/spreadsheets/d/1yQ5eOotbfMDZX4Gp-ew6DUj-XYWt8YrpVVSNiJWx4cg/edit#gid=0" // Add spreadsheet url
+  var url = "" // Add spreadsheet url
   var ss = SpreadsheetApp.openByUrl(url)
-  var sheet = ss.getSheetByName("Avainsanat_7pv") // Add your sheet's name here
+  var sheet = ss.getSheetByName("") // Add your sheet's name here
   
   var array = [['Avainsana','Kampanja','Mainosryhmä','Impressiot','Klikkaukset']];
   
