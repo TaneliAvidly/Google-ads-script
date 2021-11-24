@@ -1,0 +1,59 @@
+function main() {
+  
+  // Get spreadsheet
+  var url = "https://docs.google.com/spreadsheets/d/1yQ5eOotbfMDZX4Gp-ew6DUj-XYWt8YrpVVSNiJWx4cg/edit#gid=0" // Add spreadsheet url
+  var ss = SpreadsheetApp.openByUrl(url)
+  var sheet = ss.getSheetByName("Avainsanat_7pv") // Add your sheet's name here
+  
+  var array = [['Avainsana','Kampanja','Mainosryhmä','Impressiot','Klikkaukset']];
+  
+  var keywords = AdsApp.keywords()
+  .orderBy("Impressions DESC")
+  .forDateRange("LAST_MONTH")
+  // .withLimit(10)
+  .withCondition("Status = ENABLED")
+  .withCondition("Impressions > 1")
+  .get();
+
+  while (keywords.hasNext()) {
+    var keyword = keywords.next();
+    var timePeriod = 'LAST_7_DAYS';
+    array.push([
+    keyword.getText(),
+    keyword.getCampaign().getName(),
+    keyword.getAdGroup().getName(),
+    keyword.getStatsFor(timePeriod).getImpressions(),
+    keyword.getStatsFor(timePeriod).getClicks(),
+    ]);
+  }
+  
+  Logger.log(array)
+  
+  // Clear sheet & filter before inserting data
+  sheet.clearContents();
+  var filter = sheet.getFilter()
+  if (filter !== null) {
+    filter.remove();
+  }
+  
+  // Import data to spreadsheet
+  sheet.getRange(1,1,array.length,array[0].length).setValues(array);
+  
+  // Duplicate keywords -> Good idea to explore
+  
+  // Create filter
+  var dataRange = sheet.getDataRange();
+  var filter = dataRange.createFilter();
+
+  // Make some criteria to filter with.
+  var filterCriteria = SpreadsheetApp.newFilterCriteria();
+  /* use FilterCriteria methods */
+  filterCriteria.whenCellNotEmpty();
+
+  // Filter the range based on the 1st column:
+  filter.setColumnFilterCriteria(1, filterCriteria.build());
+  
+  // Style the sheet
+  sheet.getRange(1,1,1,5).setBackground('#000').setFontColor('#fff').setFontWeight('700').setFontSize('10').setFontFamily('IBM Plex Sans');
+  sheet.setColumnWidths(1, 6, 160);
+}
